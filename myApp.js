@@ -1,36 +1,82 @@
 require('dotenv').config();
-
 //first challenge
 let mongoose= require('mongoose')
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
+//second challenge
+let personSchema= new mongoose.Schema({
+  name: {
+    type: String,
+    required: true
+  },
+  age: Number,
+  favoriteFoods: {
+    type: Array,
+    default: '*'
+  }
+});
 
-let Person;
+//thirth challenge
+let Person= mongoose.model('Person', personSchema);
 
+
+//forth challenge
 const createAndSavePerson = (done) => {
-  done(null /*, data*/);
+  let joel=new Person({name:"joel", age:25, favoriteFoods: ["comida","comida2"]});
+
+  joel.save((err,data)=>{
+    if(err) return console.error(err)
+    done(err,data);
+  })
 };
 
+
+//fivth challenge
 const createManyPeople = (arrayOfPeople, done) => {
-  done(null /*, data*/);
+  Person.create(arrayOfPeople,(err,data)=>{
+    if(err) return console.error(err)
+    done(err,data)
+  })
 };
 
+//sixth challenge
 const findPeopleByName = (personName, done) => {
-  done(null /*, data*/);
+  Person.find({"name": personName},(err,data)=>{
+    if(err) return console.error(err)
+    done(err,data);
+  })
 };
 
+//seventh challenge
 const findOneByFood = (food, done) => {
-  done(null /*, data*/);
+  Person.findOne({favoriteFoods:food},(err,data)=>{
+    if(err) return console.error(err)
+    done(err,data)
+  })
 };
 
+//eigth challenge
 const findPersonById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findById({_id:personId}, (err,data)=>{
+    if(err) return console.error(err)
+    done(err,data)
+  })
 };
 
+//nineth challenge
 const findEditThenSave = (personId, done) => {
   const foodToAdd = "hamburger";
+  Person.findById({_id:personId},(err,data)=>{
 
-  done(null /*, data*/);
+    data.favoriteFoods.push(foodToAdd)
+    data.save((err,data)=>{
+      if (err) {
+        done(err)
+      }else{
+        done(err,data)
+      }
+    });    
+  });
 };
 
 const findAndUpdate = (personName, done) => {
