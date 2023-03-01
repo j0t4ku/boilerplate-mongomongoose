@@ -79,26 +79,42 @@ const findEditThenSave = (personId, done) => {
   });
 };
 
+//eleventh challenge
 const findAndUpdate = (personName, done) => {
   const ageToSet = 20;
-
-  done(null /*, data*/);
+  Person.findOneAndUpdate({name:personName},{age:ageToSet},{new:true},(err,data)=>{
+    if(err) return console.error(err)
+    done(err,data)
+  });
 };
 
+//twelveth challenge 
 const removeById = (personId, done) => {
-  done(null /*, data*/);
+  Person.findByIdAndRemove({_id:personId},(err,data)=>{
+    if(err) return console.error(err)
+    done(err,data)
+  })
+
 };
 
+//thirteenth challenge
 const removeManyPeople = (done) => {
   const nameToRemove = "Mary";
-
-  done(null /*, data*/);
+  Person.remove({name:nameToRemove},(err,data)=>{
+    if(err) console.error(err)
+    done(err,data)
+  })
 };
 
+//forteenth challenge
 const queryChain = (done) => {
   const foodToSearch = "burrito";
 
-  done(null /*, data*/);
+  Person.find({favoriteFoods : foodToSearch}).sort({name:"asc"}).limit(2).select("-age").exec((err,data)=>{
+    if(err) return console.error(err)
+    done(err,data)
+  })
+
 };
 
 /** **Well Done !!**
